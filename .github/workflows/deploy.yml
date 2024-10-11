@@ -12,22 +12,23 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🛠️ Setup Node.js
+      - name: 🛠️ Installer Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
 
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
+        with:
+          cache: true # Active le cache des dépendances
 
-      - name: 📦 Install dependencies
+      - name: 📦 Installer les dépendances
         run: pnpm install
 
-      - name: 🗜️ Build project
+      - name: 🗜️ Construire le projet
         run: pnpm run build
 
-      - name: 🗜️ Generate static files
+      - name: 🗜️ Générer les fichiers statiques
         run: pnpm run generate
 
       - name: 🔄 Synchroniser les fichiers via FTP
