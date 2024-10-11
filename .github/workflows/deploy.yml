@@ -12,8 +12,8 @@
 
          - name: Installer PNPM
            uses: pnpm/action-setup@v4
-           with:
-             version: 9.12.1
+           # with:
+           #   version: 9.12.1  # Supprimé pour éviter le conflit
 
          - name: Utiliser Node.js
            uses: actions/setup-node@v4
