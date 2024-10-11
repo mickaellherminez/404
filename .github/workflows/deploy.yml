@@ -33,7 +33,7 @@
          runs-on: ubuntu-latest
          steps:
            - name: Déployer sur o2switch via FTP
-             uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+             uses: SamKirkland/FTP-Deploy-Action@v4
              with:
                server: ${{ secrets.HOST }}
                username: ${{ secrets.USERNAME }}
