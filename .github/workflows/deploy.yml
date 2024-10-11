@@ -1,42 +1,47 @@
-     name: Déployer sur o2switch
+name: Déploiement 🚀
 
-     on:
-       push:
-         branches: [ main ]
+on:
+  push:
+    branches: [ main ]
 
-     jobs:
-       build:
-         runs-on: ubuntu-latest
-         steps:
-           - uses: actions/checkout@v4
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-           - name: Installer PNPM
-             uses: pnpm/action-setup@v4
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
 
-           - name: Utiliser Node.js
-             uses: actions/setup-node@v4
-             with:
-               node-version: '20'
-               cache: 'pnpm'
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
 
-           - name: Installer les dépendances
-             run: pnpm install
+      - name: 📦 Installer PNPM
+        uses: pnpm/action-setup@v4
 
-           - name: Construire le projet
-             run: pnpm run build
+      - name: 📦 Install dependencies
+        run: pnpm install
 
-           - name: Générer les fichiers statiques
-             run: pnpm run generate
+      - name: 🗜️ Build project
+        run: pnpm run build
 
-       deploy:
-         needs: build
-         runs-on: ubuntu-latest
-         steps:
-           - name: Déployer sur o2switch via FTP
-             uses: SamKirkland/FTP-Deploy-Action@v4
-             with:
-               server: ${{ secrets.HOST }}
-               username: ${{ secrets.USERNAME }}
-               password: ${{ secrets.PASSWORD }}
-               server-dir: /public_html
-               local-dir: ./dist
+      - name: 🗜️ Generate static files
+        run: pnpm run generate
+
+      - name: 🔄 Synchroniser les fichiers via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          server-dir: /public_html
+          local-dir: ./dist
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+          protocol: ftp
+          port: ${{ secrets.PORT }}
+          dangerous-clean-slate: true
