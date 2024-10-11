@@ -42,5 +42,20 @@
          pages: write
          id-token: write
        steps:
-         - name: Déployer sur GitHub Pages
-           uses: actions/deploy-pages@v2
+          - name: 🔄 Synchroniser les fichiers via FTP
+            uses: SamKirkland/FTP-Deploy-Action@4.3.3
+            with:
+              server: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              password: ${{ secrets.PASSWORD }}
+              server-dir: /
+              local-dir: ./
+              exclude: |
+                **/.git*
+                **/.git*/**
+                **/node_modules/**
+              include: |
+                favicon/**
+              protocol: ftp
+              port: ${{ secrets.PORT }}
+              dangerous-clean-slate: true
