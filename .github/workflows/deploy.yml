@@ -1,0 +1,46 @@
+   name: Déployer sur GitHub Pages
+
+   on:
+     push:
+       branches: [ main ]
+
+   jobs:
+     build:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+
+         - name: Installer PNPM
+           uses: pnpm/action-setup@v4
+           with:
+             version: 9
+
+         - name: Utiliser Node.js
+           uses: actions/setup-node@v4
+           with:
+             node-version: '20'
+             cache: 'pnpm'
+
+         - name: Installer les dépendances
+           run: pnpm install
+
+         - name: Construire le projet
+           run: pnpm run build
+
+         - name: Générer les fichiers statiques
+           run: pnpm run generate
+
+         - name: Préparer les artefacts pour le déploiement
+           uses: actions/upload-pages-artifact@v1
+           with:
+             path: './dist'
+
+     deploy:
+       needs: build
+       runs-on: ubuntu-latest
+       permissions:
+         pages: write
+         id-token: write
+       steps:
+         - name: Déployer sur GitHub Pages
+           uses: actions/deploy-pages@v2
