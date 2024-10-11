@@ -42,6 +42,43 @@
          pages: write
          id-token: write
        steps:
+         - name: 📥 Checkout code
+           uses: actions/checkout@v4
+
+         - name: 🛠️ Setup Node.js
+           uses: actions/setup-node@v4
+           with:
+             node-version: '20'
+
+          - name: 📦 Install dependencies
+            run: npm install
+
+          - name: 🗜️ Minify JavaScript
+            run: npm run minify
+
+          - name: 📄 Create .htaccess file
+            run: |
+              echo "
+              <IfModule mod_expires.c>
+              ExpiresActive On
+              ExpiresByType image/jpg \"access plus 1 year\"
+              ExpiresByType image/jpeg \"access plus 1 year\"
+              ExpiresByType image/gif \"access plus 1 year\"
+              ExpiresByType image/png \"access plus 1 year\"
+              ExpiresByType text/css \"access plus 1 month\"
+              ExpiresByType application/pdf \"access plus 1 month\"
+              ExpiresByType text/x-javascript \"access plus 1 month\"
+              ExpiresByType application/x-shockwave-flash \"access plus 1 month\"
+              ExpiresByType image/x-icon \"access plus 1 year\"
+              ExpiresDefault \"access plus 2 days\"
+              </IfModule>" > .htaccess
+
+          - name: 🖼️ Prepare favicon files
+            run: |
+              mkdir -p favicon
+              cp assets/icons/* favicon/
+              ls -la favicon
+              
           - name: 🔄 Synchroniser les fichiers via FTP
             uses: SamKirkland/FTP-Deploy-Action@4.3.3
             with:
