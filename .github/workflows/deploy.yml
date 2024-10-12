@@ -26,17 +26,14 @@ jobs:
       - name: 🗜️ Construire le projet
         run: pnpm run build
 
-      - name: 🗜️ Generate static files
-        run: pnpm run generate
-
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          server-dir: /  # Assurez-vous que c'est le bon chemin
-          local-dir: ./dist/
+          server-dir: /  # Garde le répertoire racine
+          local-dir: ./.output/  # Utilise le répertoire de sortie SSR
           exclude: |
             **/.git*
             **/.git*/**
