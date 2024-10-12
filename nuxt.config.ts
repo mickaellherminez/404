@@ -59,7 +59,15 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
+
+  // Configuration pour la page d'erreur personnalisée
+  error: {
+    statusCode: 404,
+    message: 'Page non trouvée',
+    component: '~/pages/404.vue'
   },
 
   generate: {

@@ -7,7 +7,9 @@
 </template>
 
 <script setup>
-// Vous pouvez ajouter du code ici si nécessaire
+definePageMeta({
+  layout: 'error'
+});
 </script>
 
 <style scoped>
