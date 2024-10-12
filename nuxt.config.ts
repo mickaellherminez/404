@@ -4,5 +4,6 @@ export default defineNuxtConfig({
   ssr: true, // Active le rendu côté serveur
   target: 'server', // Utilisez 'server' pour SSR
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  components: true,
 })
