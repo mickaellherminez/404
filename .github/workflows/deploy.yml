@@ -29,12 +29,19 @@ jobs:
         run: pnpm list
 
       - name: 🗜️ Générer les fichiers statiques
-        run: |
-          pnpm run generate
-          cp public/.htaccess .output/public/.htaccess
+        run: pnpm run generate
         env:
           NODE_ENV: production
         continue-on-error: true
+
+      - name: Créer le fichier .htaccess
+        run: |
+          echo "RewriteEngine On 
+          RewriteCond %{HTTP:X-Forwarded-Proto} !https
+          RewriteCond %{HTTPS} !on
+          RewriteRule ^(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+          ErrorDocument 404 /404.html" > .output/public/.htaccess
 
       - name: Afficher les logs en cas d'échec
         if: failure()
