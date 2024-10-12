@@ -26,7 +26,9 @@ jobs:
         run: pnpm install
 
       - name: 🗜️ Générer les fichiers statiques
-        run: pnpm run generate
+        run: |
+          pnpm run generate
+          cp public/.htaccess .output/public/.htaccess
 
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
@@ -35,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /
-          local-dir: ./.output/public/
+          local-dir: .output/public/
           exclude: |
             **/.git*
             **/.git*/**
