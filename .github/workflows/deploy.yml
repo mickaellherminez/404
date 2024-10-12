@@ -25,10 +25,24 @@ jobs:
       - name: 📦 Installer les dépendances
         run: pnpm install
 
+      - name: Vérifier les dépendances
+        run: pnpm list
+
       - name: 🗜️ Générer les fichiers statiques
         run: |
           pnpm run generate
           cp public/.htaccess .output/public/.htaccess
+        env:
+          NODE_ENV: production
+        continue-on-error: true
+
+      - name: Afficher les logs en cas d'échec
+        if: failure()
+        run: |
+          echo "Contenu du dossier .output :"
+          ls -R .output
+          echo "Logs de l'erreur :"
+          cat .output/logs/error.log
 
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
