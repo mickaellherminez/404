@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /
-          local-dir: ./dist
+          local-dir: ./dist/
           exclude: |
             **/.git*
             **/.git*/**
