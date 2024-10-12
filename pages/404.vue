@@ -7,9 +7,7 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: 'error'
-});
+// Pas besoin de definePageMeta ici pour une page 404 statique
 </script>
 
 <style scoped>

@@ -1,8 +1,8 @@
 import { defineNuxtConfig } from 'nuxt/config';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false, // Active le rendu côté serveur
-  target: 'server', // Utilisez 'server' pour SSR
+  ssr: false, // Désactive le rendu côté serveur pour un site statique
+  target: 'static', // Utilisez 'static' pour un site statique
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   components: true,
@@ -14,11 +14,5 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
     },
-  },
-  // Configuration pour la page d'erreur personnalisée
-  error: {
-    statusCode: 404,
-    message: 'Page non trouvée',
-    component: '~/pages/404.vue'
   },
 })
