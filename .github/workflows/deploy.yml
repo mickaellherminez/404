@@ -19,8 +19,6 @@ jobs:
 
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
-        with:
-          version: 'latest'
 
       - name: 📦 Installer les dépendances
         run: pnpm install
@@ -28,5 +26,21 @@ jobs:
       - name: 🗜️ Construire le projet
         run: pnpm run build
 
-      # Déployez votre application sur un serveur capable d'exécuter Node.js
-      # Assurez-vous que le serveur est configuré pour exécuter l'application Nuxt
+      - name: 🗜️ Generate static files
+        run: pnpm run generate
+
+      - name: 🔄 Synchroniser les fichiers via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          server-dir: /public_html
+          local-dir: ./dist
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+          protocol: ftp
+          port: ${{ secrets.PORT }}
+          dangerous-clean-slate: true
