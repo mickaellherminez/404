@@ -26,9 +26,7 @@ jobs:
         run: pnpm install
 
       - name: 🗜️ Générer les fichiers statiques
-        run: |
-          pnpm run generate
-          cp .output/public/404/index.html .output/public/404.html
+        run: pnpm run generate
 
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
