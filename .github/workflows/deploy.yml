@@ -20,7 +20,7 @@ jobs:
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
         with:
-          cache: true # Active le cache des dépendances
+          cache: true
 
       - name: 📦 Installer les dépendances
         run: pnpm install
@@ -37,8 +37,8 @@ jobs:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          server-dir: /
-          local-dir: ./
+          server-dir: /public_html/
+          local-dir: ./dist/
           exclude: |
             **/.git*
             **/.git*/**
