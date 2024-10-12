@@ -19,6 +19,8 @@ jobs:
 
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
+        with:
+          cache: true # Active le cache des dépendances
 
       - name: 📦 Installer les dépendances
         run: pnpm install
@@ -26,14 +28,18 @@ jobs:
       - name: 🗜️ Construire le projet
         run: pnpm run build
 
+
+      - name: 🗜️ Générer les fichiers statiques
+        run: pnpm run generate
+
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          server-dir: /  # Garde le répertoire racine
-          local-dir: ./dist/  # Utilise le répertoire de sortie SSR
+          server-dir: /public_html
+          local-dir: ./dist
           exclude: |
             **/.git*
             **/.git*/**
