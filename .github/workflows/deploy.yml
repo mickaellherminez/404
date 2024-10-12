@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /  # Garde le répertoire racine
-          local-dir: ./.output/  # Utilise le répertoire de sortie SSR
+          local-dir: ./dist/  # Utilise le répertoire de sortie SSR
           exclude: |
             **/.git*
             **/.git*/**
