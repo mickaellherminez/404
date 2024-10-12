@@ -26,5 +26,8 @@ export default defineNuxtConfig({
         path.resolve(generator.nuxt.options.buildDir, 'dist/404.html')
       );
     }
-  }
+  },
+  modules: [
+    '@chakra-ui/nuxt'
+  ],
 })
