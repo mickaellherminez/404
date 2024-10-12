@@ -1,4 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config';
+import fs from 'fs';
+import path from 'path';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false, // Désactive le rendu côté serveur pour un site statique
@@ -19,22 +22,25 @@ export default defineNuxtConfig({
     fallback: true // Génère un fichier 404.html
   },
   hooks: {
-    'build:done': (builder) => {
-      const fs = require('fs');
-      const path = require('path');
+    'build:done': (builder: any) => {
       const htaccessContent = `
-   <IfModule mod_rewrite.c>
-     RewriteEngine On
-     RewriteBase /
-     RewriteRule ^index\.html$ - [L]
-     RewriteCond %{REQUEST_FILENAME} !-f
-     RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule . /index.html [L]
-   </IfModule>
-   
-   ErrorDocument 404 /404.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+ErrorDocument 404 /404.html
       `;
-      fs.writeFileSync(path.resolve(builder.options.buildDir, 'dist', '.htaccess'), htaccessContent);
+      
+      const distDir = path.resolve(__dirname, '.output', 'public');
+      if (!fs.existsSync(distDir)) {
+        fs.mkdirSync(distDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(distDir, '.htaccess'), htaccessContent);
     }
   }
 })
