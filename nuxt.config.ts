@@ -19,7 +19,8 @@ export default defineNuxtConfig({
     },
   },
   generate: {
-    fallback: true // Génère un fichier 404.html
+    fallback: true, // Génère un fichier 404.html
+    routes: ['/404']
   },
   hooks: {
     'build:done': (builder: any) => {
@@ -41,6 +42,13 @@ ErrorDocument 404 /404.html
         fs.mkdirSync(distDir, { recursive: true });
       }
       fs.writeFileSync(path.join(distDir, '.htaccess'), htaccessContent);
+    },
+    'generate:done': (generator) => {
+      // Copier 404.html à la racine
+      fs.copyFileSync(
+        path.resolve(generator.nuxt.options.buildDir, 'dist/404/index.html'),
+        path.resolve(generator.nuxt.options.buildDir, 'dist/404.html')
+      );
     }
   }
 })
