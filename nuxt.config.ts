@@ -17,5 +17,24 @@ export default defineNuxtConfig({
   },
   generate: {
     fallback: true // Génère un fichier 404.html
+  },
+  hooks: {
+    'build:done': (builder) => {
+      const fs = require('fs');
+      const path = require('path');
+      const htaccessContent = `
+   <IfModule mod_rewrite.c>
+     RewriteEngine On
+     RewriteBase /
+     RewriteRule ^index\.html$ - [L]
+     RewriteCond %{REQUEST_FILENAME} !-f
+     RewriteCond %{REQUEST_FILENAME} !-d
+     RewriteRule . /index.html [L]
+   </IfModule>
+   
+   ErrorDocument 404 /404.html
+      `;
+      fs.writeFileSync(path.resolve(builder.options.buildDir, 'dist', '.htaccess'), htaccessContent);
+    }
   }
 })

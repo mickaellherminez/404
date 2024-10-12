@@ -26,7 +26,18 @@ jobs:
         run: pnpm install
 
       - name: 🗜️ Générer les fichiers statiques
-        run: pnpm run generate
+        run: |
+          pnpm run generate
+          echo "<IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+          </IfModule>
+          
+          ErrorDocument 404 /404.html" > dist/.htaccess
 
       - name: 🔄 Synchroniser les fichiers via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
