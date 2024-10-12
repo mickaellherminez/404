@@ -15,4 +15,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  generate: {
+    fallback: '404.html' // Ceci génère un fichier 404.html à la racine
+  },
 })

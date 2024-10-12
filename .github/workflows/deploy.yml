@@ -35,8 +35,8 @@ jobs:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          server-dir: /  # Assurez-vous que ce chemin est correct pour votre hébergement
-          local-dir: ./dist/  # Ajout du slash à la fin
+          server-dir: /  # Assurez-vous que c'est le bon chemin
+          local-dir: ./dist/
           exclude: |
             **/.git*
             **/.git*/**
