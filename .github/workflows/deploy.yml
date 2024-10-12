@@ -20,14 +20,10 @@ jobs:
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
         with:
-          cache: true # Active le cache des dépendances
+          version: 'latest'
 
       - name: 📦 Installer les dépendances
         run: pnpm install
-
-      - name: 🗜️ Construire le projet
-        run: pnpm run build
-
 
       - name: 🗜️ Générer les fichiers statiques
         run: pnpm run generate

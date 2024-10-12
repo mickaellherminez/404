@@ -1,8 +1,8 @@
 import { defineNuxtConfig } from 'nuxt/config';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true, // Active le rendu côté serveur
-  target: 'server', // Utilisez 'server' pour SSR
+  ssr: false, // Désactive le rendu côté serveur pour un site statique
+  target: 'static', // Utilisez 'static' pour un site statique
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   components: true,
@@ -15,5 +15,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  // Supprimez la configuration 'generate' car elle n'est pas nécessaire en mode SSR
+  generate: {
+    fallback: true // Génère un fichier 404.html
+  }
 })
