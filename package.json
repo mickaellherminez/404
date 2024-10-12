@@ -10,8 +10,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@chakra-ui/nuxt": "^0.7.1",
-    "@chakra-ui/vue-next": "1.0.0-alpha.16",
     "nuxt": "^3.13.2"
   },
   "packageManager": "pnpm@9.12.1"

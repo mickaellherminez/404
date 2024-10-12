@@ -1,26 +1,13 @@
 <template>
-  <ChakraProvider>
-    <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" bg="gray.100">
-      <Box textAlign="center" p={8} maxWidth="500px" borderRadius="lg" bg="white" boxShadow="lg">
-        <Heading as="h1" size="2xl" mb={4} color="red.500">
-          Erreur {{ error.statusCode }}
-        </Heading>
-        <Text fontSize="xl" mb={6} color="gray.600">
-          {{ error.message || "Oups ! Quelque chose s'est mal passé." }}
-        </Text>
-        <Image src="/404-illustration.svg" alt="Erreur illustration" maxWidth="200px" mx="auto" mb={6} />
-        <Button colorScheme="blue" size="lg" @click="handleError">
-          Retour à l'accueil
-        </Button>
-      </Box>
-    </Box>
-  </ChakraProvider>
+  <div class="error-container">
+    <h1 class="error-title">Erreur {{ error.statusCode }}</h1>
+    <p class="error-message">{{ error.message || "Une erreur s'est produite" }}</p>
+    <button class="error-button" @click="handleError">Retour à l'accueil</button>
+  </div>
 </template>
 
 <script setup>
-import { Box, Heading, Text, Button, Image, ChakraProvider } from '@chakra-ui/vue-next'
-
-const props = defineProps({
+defineProps({
   error: Object
 })
 
@@ -28,3 +15,42 @@ const handleError = () => {
   clearError({ redirect: '/' })
 }
 </script>
+
+<style scoped>
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.error-title {
+  font-size: 3rem;
+  color: #e53e3e;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+.error-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #3182ce;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.error-button:hover {
+  background-color: #2c5282;
+}
+</style>

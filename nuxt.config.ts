@@ -15,19 +15,5 @@ export default defineNuxtConfig({
   },
   generate: {
     fallback: true
-  },
-  hooks: {
-    'generate:done': (generator) => {
-      // Copier 404.html à la racine
-      const fs = require('fs');
-      const path = require('path');
-      fs.copyFileSync(
-        path.resolve(generator.nuxt.options.buildDir, 'dist/404/index.html'),
-        path.resolve(generator.nuxt.options.buildDir, 'dist/404.html')
-      );
-    }
-  },
-  modules: [
-    '@chakra-ui/nuxt'
-  ],
+  }
 })
