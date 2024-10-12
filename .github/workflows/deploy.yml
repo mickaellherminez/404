@@ -20,7 +20,7 @@ jobs:
       - name: 📦 Installer PNPM
         uses: pnpm/action-setup@v2
         with:
-          cache: true
+          version: 'latest'  # Spécifiez la version si nécessaire
 
       - name: 📦 Installer les dépendances
         run: pnpm install
@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /public_html/
-          local-dir: ./dist/  # Assurez-vous que ce chemin est correct
+          local-dir: ./dist/
           exclude: |
             **/.git*
             **/.git*/**
