@@ -1,34 +1,85 @@
 <template>
-  <n-layout-header bordered>
-    <n-menu mode="horizontal" :options="menuOptions" />
+  <n-layout-header bordered class="super-toolbar">
+    <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
+    <div class="toolbar-right">
+      <n-select v-model:value="selectedLanguage" :options="languageOptions" size="small" />
+      <n-switch v-model:value="isDarkTheme" @update:value="toggleTheme">
+        <template #checked>
+          <n-icon><SunnyOutline /></n-icon>
+        </template>
+        <template #unchecked>
+          <n-icon><MoonOutline /></n-icon>
+        </template>
+      </n-switch>
+    </div>
   </n-layout-header>
 </template>
 
 <script setup>
-import { h, ref } from 'vue'
-import { NLayoutHeader, NMenu, NButton } from 'naive-ui'
+import { h, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import {
+  NLayoutHeader,
+  NMenu,
+  NSelect,
+  NSwitch,
+  NIcon,
+  useMessage,
+  useOsTheme
+} from 'naive-ui'
+import { SunnyOutline, MoonOutline } from '@vicons/ionicons5'
 
 const router = useRouter()
+const message = useMessage()
+const osTheme = useOsTheme()
+
+const activeKey = ref(null)
+const selectedLanguage = ref('fr')
+const isDarkTheme = ref(osTheme.value === 'dark')
 
 const menuOptions = [
   {
-    label: () => h(
-      'a',
-      { href: '/', onClick: (e) => { e.preventDefault(); router.push('/') } },
-      { default: () => 'Accueil' }
-    ),
-    key: 'home'
+    label: 'Accueil',
+    key: 'home',
+    onClick: () => router.push('/')
   },
   {
-    label: () => h(
-      'a',
-      { href: '/about', onClick: (e) => { e.preventDefault(); router.push('/about') } },
-      { default: () => 'À propos' }
-    ),
-    key: 'about'
+    label: 'À propos',
+    key: 'about',
+    onClick: () => router.push('/about')
+  },
+  {
+    label: 'Pages 404',
+    key: '404',
+    children: [
+      {
+        label: 'Classique',
+        key: '404-classic',
+        onClick: () => router.push('/classic/404')
+      },
+      {
+        label: 'Moderne',
+        key: '404-modern',
+        onClick: () => router.push('/modern/404')
+      }
+    ]
   }
 ]
+
+const languageOptions = [
+  { label: 'Français', value: 'fr' },
+  { label: 'English', value: 'en' }
+]
+
+const toggleTheme = (value) => {
+  // Ici, vous pouvez implémenter la logique pour changer le thème
+  message.info(value ? 'Thème sombre activé' : 'Thème clair activé')
+}
+
+// Vous pouvez ajouter ici la logique pour changer la langue
+watch(selectedLanguage, (newLang) => {
+  message.info(`Langue changée pour : ${newLang}`)
+})
 </script>
 
 <style scoped>
@@ -36,35 +87,23 @@ const menuOptions = [
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
-  color: white;
-  padding: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.toolbar-item {
-  color: white;
-  text-decoration: none;
-  margin-right: 1rem;
-  transition: color 0.3s ease;
-}
-
-.toolbar-item:hover {
-  color: #00dc82;
+  padding: 0 1rem;
 }
 
 .toolbar-right {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .super-toolbar {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .toolbar-right {
+    margin-top: 0.5rem;
+  }
 }
 </style>

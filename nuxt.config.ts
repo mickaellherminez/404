@@ -22,7 +22,9 @@ export default defineNuxtConfig({
 
   robots: {
     UserAgent: '*',
-    Disallow: '/error'
+    Disallow: ['/error', '/admin'],
+    Allow: '/',
+    Sitemap: 'https://votresite.com/sitemap.xml'
   },
 
   build: {
