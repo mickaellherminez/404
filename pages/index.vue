@@ -1,44 +1,64 @@
 <template>
-  <div class="home-page">
-    <h1>Bienvenue sur notre site !</h1>
-    <p>Découvrez nos fonctionnalités et services.</p>
-    <NuxtLink to="/about" class="btn">En savoir plus</NuxtLink>
-  </div>
+  <n-space vertical :size="24">
+    <n-layout>
+      <n-layout-header>
+        <n-h1>Bienvenue sur notre site</n-h1>
+      </n-layout-header>
+      <n-layout-content>
+        <n-card>
+          <n-p>
+            Ceci est la page d'accueil de notre application Nuxt 3 avec Naive UI.
+          </n-p>
+          <n-p>
+            Explorez les différentes fonctionnalités et pages 404 personnalisées !
+          </n-p>
+        </n-card>
+        <n-space justify="center" :size="12" style="margin-top: 24px;">
+          <n-button type="primary" @click="goToAbout">
+            En savoir plus
+          </n-button>
+          <n-button @click="showNotification">
+            Afficher une notification
+          </n-button>
+        </n-space>
+      </n-layout-content>
+    </n-layout>
+  </n-space>
 </template>
 
 <script setup>
-// Ajoutez ici des fonctionnalités supplémentaires si nécessaire
+import { useRouter } from 'vue-router'
+import { useMessage } from 'naive-ui'
+import {
+  NSpace,
+  NLayout,
+  NLayoutHeader,
+  NLayoutContent,
+  NH1,
+  NP,
+  NCard,
+  NButton
+} from 'naive-ui'
+
+const router = useRouter()
+const message = useMessage()
+
+const goToAbout = () => {
+  router.push('/about')
+}
+
+const showNotification = () => {
+  message.info("C'est une notification de test !")
+}
 </script>
 
 <style scoped>
-.home-page {
+.n-layout-header {
+  padding: 24px;
   text-align: center;
-  padding: 2rem;
-  background: linear-gradient(to bottom, #e0f7fa, #80deea);
-  color: #006064;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #00796b;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.btn:hover {
-  background-color: #004d40;
+.n-layout-content {
+  padding: 24px;
 }
 </style>

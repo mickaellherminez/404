@@ -3,12 +3,12 @@
     <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
     <div class="toolbar-right">
       <n-select v-model:value="selectedLanguage" :options="languageOptions" size="small" />
-      <n-switch v-model:value="isDarkTheme" @update:value="toggleTheme">
+      <n-switch v-model:value="isDarkTheme" @update:value="toggleTheme" class="theme-switch">
         <template #checked>
-          <n-icon><SunnyOutline /></n-icon>
+          <n-icon size="18"><SunnyOutline /></n-icon>
         </template>
         <template #unchecked>
-          <n-icon><MoonOutline /></n-icon>
+          <n-icon size="18"><MoonOutline /></n-icon>
         </template>
       </n-switch>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { h, ref, watch } from 'vue'
+import { ref, watch, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   NLayoutHeader,
@@ -28,6 +28,8 @@ import {
   useOsTheme
 } from 'naive-ui'
 import { SunnyOutline, MoonOutline } from '@vicons/ionicons5'
+
+const emit = defineEmits(['theme-change'])
 
 const router = useRouter()
 const message = useMessage()
@@ -72,7 +74,8 @@ const languageOptions = [
 ]
 
 const toggleTheme = (value) => {
-  // Ici, vous pouvez implémenter la logique pour changer le thème
+  isDarkTheme.value = value
+  emit('theme-change', value)
   message.info(value ? 'Thème sombre activé' : 'Thème clair activé')
 }
 
@@ -94,6 +97,23 @@ watch(selectedLanguage, (newLang) => {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.theme-switch {
+  min-width: 50px; /* Augmente la largeur minimale du switch */
+}
+
+:deep(.n-switch__rail) {
+  height: 24px; /* Augmente la hauteur du rail du switch */
+}
+
+:deep(.n-switch__button) {
+  width: 22px; /* Augmente la largeur du bouton du switch */
+  height: 22px; /* Augmente la hauteur du bouton du switch */
+}
+
+:deep(.n-switch__button-icon) {
+  font-size: 16px; /* Ajuste la taille de l'icône */
 }
 
 @media (max-width: 768px) {

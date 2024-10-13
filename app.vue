@@ -1,12 +1,11 @@
 <template>
-  <n-config-provider>
+  <n-config-provider :theme="theme">
     <n-loading-bar-provider>
       <n-dialog-provider>
         <n-notification-provider>
           <n-message-provider>
-            <NuxtLayout>
-              <NuxtPage />
-            </NuxtLayout>
+            <SuperToolbar @theme-change="toggleTheme" />
+            <NuxtPage />
           </n-message-provider>
         </n-notification-provider>
       </n-dialog-provider>
@@ -15,13 +14,23 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import {
   NConfigProvider,
   NMessageProvider,
   NDialogProvider,
   NNotificationProvider,
-  NLoadingBarProvider
+  NLoadingBarProvider,
+  darkTheme,
+  lightTheme
 } from 'naive-ui'
+import SuperToolbar from '~/components/SuperToolbar.vue'
+
+const theme = ref(null)
+
+const toggleTheme = (isDark) => {
+  theme.value = isDark ? darkTheme : lightTheme
+}
 </script>
 
 <style>
