@@ -10,11 +10,8 @@
       </n-layout-header>
       <n-layout-content>
         <n-space vertical align="center" style="min-height: 80vh; padding: 2rem;">
-          <n-result
-            :status="error.statusCode === 404 ? '404' : 'error'"
-            :title="error.statusCode.toString()"
-            :description="error.message || 'Oups ! Cette page semble avoir disparu.'"
-          >
+          <n-result :status="error.statusCode === 404 ? '404' : 'error'" :title="error.statusCode.toString()"
+            :description="error.message || 'Oups ! Cette page semble avoir disparu.'">
             <template #footer>
               <n-space>
                 <n-button @click="handleError" type="primary" size="large">
@@ -26,48 +23,44 @@
               </n-space>
             </template>
           </n-result>
-          <n-alert title="Besoin d'aide ?" type="info">
-            Si vous pensez qu'il s'agit d'une erreur, n'hésitez pas à contacter notre support.
+          <n-alert type="warning" style="max-width: 600px; margin-top: 2rem;">
+            Si le problème persiste, veuillez contacter notre support technique.
           </n-alert>
         </n-space>
       </n-layout-content>
       <n-layout-footer bordered>
         <n-space justify="center">
-          <n-text>&copy; {{ new Date().getFullYear() }} Votre Entreprise. Tous droits réservés.</n-text>
+          <span>&copy; {{ new Date().getFullYear() }} Votre Entreprise. Tous droits réservés.</span>
         </n-space>
       </n-layout-footer>
     </n-layout>
   </n-config-provider>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import { 
-  NConfigProvider, 
-  NLayout, 
-  NLayoutHeader, 
-  NLayoutContent, 
+<script setup>
+import { ref, computed } from 'vue'
+import {
+  NConfigProvider,
+  NLayout,
+  NLayoutHeader,
+  NLayoutContent,
   NLayoutFooter,
-  NPageHeader, 
-  NSpace, 
-  NResult, 
-  NButton, 
-  NAlert, 
-  NText,
-  darkTheme, 
-  useOsTheme 
+  NPageHeader,
+  NSpace,
+  NResult,
+  NButton,
+  NAlert,
+  darkTheme,
+  useOsTheme
 } from 'naive-ui'
 import { useHead } from '#app'
 
 const props = defineProps({
-  error: {
-    type: Object,
-    required: true
-  }
+  error: Object
 })
 
-const osTheme = useOsTheme()
-const theme = computed(() => osTheme.value === 'dark' ? darkTheme : null)
+const osThemeRef = useOsTheme()
+const theme = computed(() => osThemeRef.value === 'dark' ? darkTheme : null)
 
 const handleError = () => {
   clearError({ redirect: '/' })
@@ -78,11 +71,10 @@ const reportError = () => {
   console.log('Erreur signalée:', props.error)
 }
 
-// SEO
 useHead({
-  title: `Erreur ${props.error.statusCode} | Votre Site`,
+  title: `Erreur ${props.error.statusCode} - Votre Site`,
   meta: [
-    { name: 'description', content: `Une erreur ${props.error.statusCode} s'est produite. ${props.error.message}` },
+    { name: 'description', content: `Page d'erreur ${props.error.statusCode} - ${props.error.message || 'Une erreur est survenue.'}` },
     { name: 'robots', content: 'noindex, nofollow' }
   ]
 })
