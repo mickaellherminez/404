@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     },
   },
   generate: {
-    fallback: true
+    fallback: 'error.vue' // Spécifie le fichier de repli pour les routes non trouvées
   },
   css: [
     'vfonts/Lato.css',
