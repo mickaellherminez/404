@@ -1,161 +1,111 @@
 <template>
-  <div class="error-container">
-    <div class="error-content">
-      <h1 class="error-title">{{ error.statusCode }}</h1>
-      <p class="error-message">{{ error.message || "Oups ! Cette page semble avoir disparu." }}</p>
-      <p class="error-subtitle">Explorons de nouveaux horizons ensemble.</p>
-      <button class="error-button" @click="handleError">
-        Retour à l'accueil
-        <span class="button-icon">→</span>
-      </button>
-    </div>
-    <div class="error-illustration">
-      <div class="circle circle-1"></div>
-      <div class="circle circle-2"></div>
-      <div class="circle circle-3"></div>
-    </div>
-  </div>
+  <n-config-provider :theme="theme">
+    <n-layout>
+      <n-layout-header bordered>
+        <n-page-header>
+          <template #title>
+            Erreur {{ error.statusCode }}
+          </template>
+        </n-page-header>
+      </n-layout-header>
+      <n-layout-content>
+        <n-space vertical align="center" style="min-height: 80vh; padding: 2rem;">
+          <n-result
+            :status="error.statusCode === 404 ? '404' : 'error'"
+            :title="error.statusCode.toString()"
+            :description="error.message || 'Oups ! Cette page semble avoir disparu.'"
+          >
+            <template #footer>
+              <n-space>
+                <n-button @click="handleError" type="primary" size="large">
+                  Retour à l'accueil
+                </n-button>
+                <n-button @click="reportError" size="large">
+                  Signaler un problème
+                </n-button>
+              </n-space>
+            </template>
+          </n-result>
+          <n-alert title="Besoin d'aide ?" type="info">
+            Si vous pensez qu'il s'agit d'une erreur, n'hésitez pas à contacter notre support.
+          </n-alert>
+        </n-space>
+      </n-layout-content>
+      <n-layout-footer bordered>
+        <n-space justify="center">
+          <n-text>&copy; {{ new Date().getFullYear() }} Votre Entreprise. Tous droits réservés.</n-text>
+        </n-space>
+      </n-layout-footer>
+    </n-layout>
+  </n-config-provider>
 </template>
 
-<script setup>
-defineProps({
-  error: Object
+<script setup lang="ts">
+import { computed } from 'vue'
+import { 
+  NConfigProvider, 
+  NLayout, 
+  NLayoutHeader, 
+  NLayoutContent, 
+  NLayoutFooter,
+  NPageHeader, 
+  NSpace, 
+  NResult, 
+  NButton, 
+  NAlert, 
+  NText,
+  darkTheme, 
+  useOsTheme 
+} from 'naive-ui'
+import { useHead } from '#app'
+
+const props = defineProps({
+  error: {
+    type: Object,
+    required: true
+  }
 })
+
+const osTheme = useOsTheme()
+const theme = computed(() => osTheme.value === 'dark' ? darkTheme : null)
 
 const handleError = () => {
   clearError({ redirect: '/' })
 }
+
+const reportError = () => {
+  // Implémentez ici la logique pour signaler l'erreur
+  console.log('Erreur signalée:', props.error)
+}
+
+// SEO
+useHead({
+  title: `Erreur ${props.error.statusCode} | Votre Site`,
+  meta: [
+    { name: 'description', content: `Une erreur ${props.error.statusCode} s'est produite. ${props.error.message}` },
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
+})
 </script>
 
-<style scoped>
-.error-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f5f7;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  overflow: hidden;
-  position: relative;
-}
-
-.error-content {
-  text-align: center;
-  max-width: 600px;
-  padding: 2rem;
-  z-index: 10;
-}
-
-.error-title {
-  font-size: 8rem;
-  font-weight: 700;
-  color: #1d1d1f;
+<style>
+body {
   margin: 0;
-  line-height: 1;
+  font-family: sans-serif;
 }
 
-.error-message {
-  font-size: 2rem;
-  color: #1d1d1f;
-  margin: 1rem 0;
+/* Styles pour l'accessibilité */
+.n-button:focus {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
 }
 
-.error-subtitle {
-  font-size: 1.2rem;
-  color: #86868b;
-  margin-bottom: 2rem;
-}
-
-.error-button {
-  background-color: #0071e3;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
-  border-radius: 980px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.error-button:hover {
-  background-color: #0077ed;
-  transform: scale(1.05);
-}
-
-.button-icon {
-  margin-left: 8px;
-  transition: transform 0.3s ease;
-}
-
-.error-button:hover .button-icon {
-  transform: translateX(4px);
-}
-
-.error-illustration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-}
-
-.circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.1;
-}
-
-.circle-1 {
-  width: 300px;
-  height: 300px;
-  background-color: #40c8e0;
-  top: -50px;
-  left: -50px;
-  animation: float 6s ease-in-out infinite;
-}
-
-.circle-2 {
-  width: 200px;
-  height: 200px;
-  background-color: #34c759;
-  bottom: -30px;
-  right: -30px;
-  animation: float 8s ease-in-out infinite;
-}
-
-.circle-3 {
-  width: 150px;
-  height: 150px;
-  background-color: #ff9f0a;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: pulse 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
-}
-
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
-  100% { transform: translate(-50%, -50%) scale(1); }
-}
-
-@media (max-width: 768px) {
-  .error-title {
-    font-size: 6rem;
-  }
-  
-  .error-message {
-    font-size: 1.5rem;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 </style>

@@ -1,36 +1,32 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <n-config-provider>
+    <n-loading-bar-provider>
+      <n-dialog-provider>
+        <n-notification-provider>
+          <n-message-provider>
+            <NuxtLayout>
+              <NuxtPage />
+            </NuxtLayout>
+          </n-message-provider>
+        </n-notification-provider>
+      </n-dialog-provider>
+    </n-loading-bar-provider>
+  </n-config-provider>
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-
-const router = useRouter()
-const route = useRoute()
-
-router.onError((error) => {
-  if (error.message.includes('Failed to fetch dynamically imported module') || error.message.includes('Chunkload failed')) {
-    router.push('/404')
-  }
-})
-
-// Redirection vers 404 si la page n'existe pas
-if (process.client) {
-  router.beforeEach((to, from, next) => {
-    if (!to.matched.length) {
-      next('/404')
-    } else {
-      next()
-    }
-  })
-}
+import {
+  NConfigProvider,
+  NMessageProvider,
+  NDialogProvider,
+  NNotificationProvider,
+  NLoadingBarProvider
+} from 'naive-ui'
 </script>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 </style>

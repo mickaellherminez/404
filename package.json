@@ -10,7 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.13.2"
+    "@css-render/vue3-ssr": "^0.15.14",
+    "naive-ui": "^2.40.1",
+    "nuxt": "^3.13.2",
+    "vfonts": "^0.0.3"
   },
   "packageManager": "pnpm@9.12.1"
 }
