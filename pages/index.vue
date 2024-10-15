@@ -42,7 +42,7 @@
           <n-avatar
             round
             size="large"
-            :src="'https://404.mickaellherminez.net/mickaellherminez.png'"
+            :src="defaultAvatar"
             :fallback-src="defaultAvatar"
           >
             ML
