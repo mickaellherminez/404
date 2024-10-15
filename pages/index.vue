@@ -42,7 +42,7 @@
           <n-avatar
             round
             size="large"
-            :src="'../mickaellherminez.png'"
+            :src="'https://404.mickaellherminez.net/mickaellherminez.png'"
             :fallback-src="defaultAvatar"
           >
             ML
@@ -130,7 +130,7 @@ const exploreGallery = () => {
 }
 
 // Fallback image au cas où l'image principale ne se charge pas
-const defaultAvatar = 'https://example.com/default-avatar.png' // Remplacez par une URL d'image par défaut
+const defaultAvatar = 'https://404.mickaellherminez.net/mickaellherminez.png' // Remplacez par une URL d'image par défaut
 </script>
 
 <style scoped>
