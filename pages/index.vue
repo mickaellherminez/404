@@ -39,20 +39,15 @@
       <!-- About Creator Section -->
       <n-card class="about-section">
         <n-space align="center" justify="center">
-          <n-avatar
-            round
-            size="large"
-            :src="defaultAvatar"
-            :fallback-src="'https://via.placeholder.com/100'"
-          >
-            ML
+          <n-avatar round size="large"
+            src="https://404.mickaellherminez.net/mickaellherminez.png">
           </n-avatar>
           <div>
             <n-h3>Mickael Lherminez</n-h3>
             <n-p>
-              Créateur passionné de 404 Gallery, Mickael est un développeur web expérimenté 
-              avec un œil pour le design et une passion pour l'innovation. Son objectif est 
-              de transformer les erreurs 404 en opportunités créatives pour améliorer 
+              Créateur passionné de 404 Gallery, Mickael est un développeur web expérimenté
+              avec un œil pour le design et une passion pour l'innovation. Son objectif est
+              de transformer les erreurs 404 en opportunités créatives pour améliorer
               l'expérience utilisateur sur le web.
             </n-p>
           </div>
