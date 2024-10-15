@@ -43,7 +43,7 @@
             round
             size="large"
             :src="defaultAvatar"
-            :fallback-src="defaultAvatar"
+            :fallback-src="'https://via.placeholder.com/100'"
           >
             ML
           </n-avatar>
