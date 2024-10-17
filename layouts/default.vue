@@ -5,6 +5,6 @@
 </template>
 
 <script setup>
-import SuperToolbar from '~/components/SuperToolbar.vue'
+import SuperToolbar from '../components/SuperToolbar.vue'
 </script>
 

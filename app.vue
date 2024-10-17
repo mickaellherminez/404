@@ -4,8 +4,10 @@
       <n-dialog-provider>
         <n-notification-provider>
           <n-message-provider>
-            <SuperToolbar @theme-change="toggleTheme" />
-            <NuxtPage />
+            <NuxtLayout>
+              <SuperToolbar @theme-change="toggleTheme" />
+              <NuxtPage />
+            </NuxtLayout>
           </n-message-provider>
         </n-notification-provider>
       </n-dialog-provider>
@@ -24,7 +26,7 @@ import {
   darkTheme,
   lightTheme
 } from 'naive-ui'
-import SuperToolbar from '~/components/SuperToolbar.vue'
+import SuperToolbar from '../components/SuperToolbar.vue'
 
 const theme = ref(null)
 

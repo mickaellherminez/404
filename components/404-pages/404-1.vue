@@ -1,36 +1,52 @@
 <template>
-  <div :class="['game-container', theme]">
-    <h1>404 - Page Not Found</h1>
-    <p>Find the treasure in the optimal number of steps!</p>
+  <div :class="['game-container', themeClass]">
+    <h1>404 - Page Non Trouvée</h1>
+    <p>Trouvez le trésor en un nombre optimal de déplacements !</p>
     <div id="maze">
       <div v-for="(row, y) in maze" :key="`row-${y}`" class="row">
-        <div v-for="(cellValue, x) in row" :key="`cell-${x}-${y}`" :class="['cell', {
-          wall: cellValue === 1,
-          treasure: cellValue === 2
-        }]">
+        <div
+          v-for="(cellValue, x) in row"
+          :key="`cell-${x}-${y}`"
+          :class="[
+            'cell',
+            {
+              wall: cellValue === 1,
+              treasure: cellValue === 2,
+              player: x === player.x && y === player.y,
+            },
+          ]"
+        >
           <span v-if="cellValue === 2">💎</span>
           <span v-else-if="x === player.x && y === player.y">
-            {{ steps <= optimalPath.value + 15 ? '😊' : '😓' }} </span>
+            {{ steps <= optimalPath + 15 ? '😊' : '😓' }}
+          </span>
         </div>
       </div>
     </div>
     <div id="message">{{ message }}</div>
-    <div id="steps">Steps: {{ steps }}</div>
+    <div id="steps">Déplacements : {{ steps }}</div>
     <div id="controls">
-      <button @click="move(0, -1)">↑</button><br>
+      <button @click="move(0, -1)">↑</button><br />
       <button @click="move(-1, 0)">←</button>
-      <button @click="move(1, 0)">→</button><br>
+      <button @click="move(1, 0)">→</button><br />
       <button @click="move(0, 1)">↓</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, computed } from 'vue';
 
+// Récupérer le thème depuis les props ou le contexte
 const props = defineProps({
-  theme: String
+  theme: {
+    type: String,
+    default: 'light',
+  },
 });
+
+// Calculer la classe de thème
+const themeClass = computed(() => (props.theme === 'dark' ? 'dark' : 'light'));
 
 const mazeSize = 15;
 const maze = ref([]);
@@ -39,18 +55,21 @@ const steps = ref(0);
 const optimalPath = ref(0);
 const message = ref('');
 
+// Générer le labyrinthe
 function generateMaze() {
-  maze.value = Array.from({ length: mazeSize }, () => Array(mazeSize).fill(1));
+  maze.value = Array.from({ length: mazeSize }, () =>
+    Array(mazeSize).fill(1)
+  );
   const stack = [{ x: 1, y: 1 }];
   maze.value[1][1] = 0;
 
   while (stack.length > 0) {
     const current = stack[stack.length - 1];
     const directions = [
-      { dx: 0, dy: -2 }, // Up
-      { dx: 2, dy: 0 },  // Right
-      { dx: 0, dy: 2 },  // Down
-      { dx: -2, dy: 0 }  // Left
+      { dx: 0, dy: -2 }, // Haut
+      { dx: 2, dy: 0 },  // Droite
+      { dx: 0, dy: 2 },  // Bas
+      { dx: -2, dy: 0 }, // Gauche
     ].sort(() => Math.random() - 0.5);
 
     let moved = false;
@@ -77,13 +96,14 @@ function generateMaze() {
     }
   }
 
-  // Place treasure
+  // Placer le trésor
   maze.value[mazeSize - 2][mazeSize - 2] = 2;
 
-  // Calculate optimal path
+  // Calculer le chemin optimal
   optimalPath.value = calculateOptimalPath();
 }
 
+// Calculer le chemin optimal vers le trésor
 function calculateOptimalPath() {
   const queue = [{ x: 1, y: 1, steps: 0 }];
   const visited = new Set();
@@ -99,11 +119,17 @@ function calculateOptimalPath() {
       [-1, 0],
       [1, 0],
       [0, -1],
-      [0, 1]
+      [0, 1],
     ].forEach(([dx, dy]) => {
       const nx = current.x + dx;
       const ny = current.y + dy;
-      if (maze.value[ny][nx] !== 1) {
+      if (
+        nx >= 0 &&
+        nx < mazeSize &&
+        ny >= 0 &&
+        ny < mazeSize &&
+        maze.value[ny][nx] !== 1
+      ) {
         queue.push({ x: nx, y: ny, steps: current.steps + 1 });
       }
     });
@@ -111,32 +137,32 @@ function calculateOptimalPath() {
   return Infinity;
 }
 
+// Déplacer le joueur
 function move(dx, dy) {
   const newX = player.x + dx;
   const newY = player.y + dy;
-  if (maze.value[newY][newX] !== 1) {
+  if (
+    newX >= 0 &&
+    newX < mazeSize &&
+    newY >= 0 &&
+    newY < mazeSize &&
+    maze.value[newY][newX] !== 1
+  ) {
     player.x = newX;
     player.y = newY;
     steps.value++;
     if (maze.value[newY][newX] === 2) {
       if (steps.value <= optimalPath.value + 15) {
-        message.value = `Congratulations! You've found the treasure in ${steps.value} steps! 🎉`;
+        message.value = `Bravo ! Vous avez trouvé le trésor en ${steps.value} déplacements ! 🎉`;
       } else {
-        message.value = `Too many steps! Try again. Optimal path: ${optimalPath.value} steps.`;
-        resetGame();
+        message.value = `Trop de déplacements ! Réessayez. Chemin optimal : ${optimalPath.value} déplacements.`;
+        // Vous pouvez choisir de réinitialiser le jeu ici si nécessaire
       }
     }
   }
 }
 
-function resetGame() {
-  player.x = 1;
-  player.y = 1;
-  steps.value = 0;
-  message.value = '';
-  generateMaze();
-}
-
+// Gérer les entrées clavier
 function handleKeydown(e) {
   switch (e.key) {
     case 'ArrowUp':
@@ -211,9 +237,15 @@ onUnmounted(() => {
   font-size: 18px;
 }
 
+.player {
+  background-color: rgba(233, 69, 96, 0.3);
+}
+
 #message {
   margin-top: 20px;
   font-size: 18px;
+  text-align: center;
+  max-width: 80%;
 }
 
 #controls {
